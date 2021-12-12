@@ -49,6 +49,7 @@ layout = [
     daily_profit,
     total_profit,
     dur,
+    [sg.Text("* Created by akh826",justification='right',key="duration",size=(75, 1))],
     ]
 window = sg.Window('Thetan Arena Caculator', layout)
 THC_prices = 0.25
@@ -108,16 +109,22 @@ def main():
         if event == sg.WIN_CLOSED:
             break
         try:
-            if isfloat(values['-winrtate-']) and (0 <= values['-winrtate-'] <= 1):
-                winrate = values['-winrtate-']
+            if values['-winrtate-'] == '':
+                winrate = thetan_arena_data.winrate
+            if isfloat(values['-winrtate-']) and (0 <= float(values['-winrtate-']) <= 1):
+                winrate = float(values['-winrtate-'])
         except Exception:
             print("Wrong input winrate")
         try:
+            if values['-gthcbattles-'] == '':
+                gthcbattles = hero[hero_rarity][skin_rarity]["min_gthc"]
             if isfloat(values['-gthcbattles-']) and (float(values['-gthcbattles-']) > 0):
                 gthcbattles = float(values['-gthcbattles-'])
         except Exception:
             print("Wrong input gthcbattles")
         try:
+            if values['-thc_prices-'] == '':
+                thc_prices = thetan_arena_data.thc_prices
             if isfloat(values['-thc_prices-']):
                 thc_prices = float(values['-thc_prices-'])
             else:
@@ -153,7 +160,7 @@ def main():
             
         window.Element('total_profit').update(f"{min_earn} - {max_earn}")
         window.Element('total_profit_money').update(f"{format(float(min_earn*thc_prices),'.3f')}$ - {format(float(max_earn*thc_prices),'.3f')}$")
-        window.Element('duration').update(f"{min_dur} - {max_dur}")
+        window.Element('duration').update(f"{format(float(min_dur),'.1f')} - {format(float(max_dur),'.1f')}")
 
     window.close()
 
