@@ -3,6 +3,9 @@ hero['common_hero'] = {}
 hero['epic_hero'] = {}
 hero['legendary_hero'] = {}
 
+winrate = .5
+thc_prices = 0.21
+thg_prices = 11.32
 # common_hero = {}
 # epic_hero = {}
 # legendary_hero = {}
