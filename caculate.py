@@ -1,7 +1,8 @@
 from datetime import date
-from thetan_arena_data import hero
+from thetan_arena_data import hero, get_prices_data
 import thetan_arena_data
 import PySimpleGUI as sg
+import threading
 
 sg.theme('DarkAmber')   
 arr1 = [
@@ -51,8 +52,8 @@ layout = [
     dur,
     [sg.Text("* Created by akh826",justification='right',key="duration",size=(75, 1))],
     ]
+
 window = sg.Window('Thetan Arena Caculator', layout)
-THC_prices = 0.25
 
 def playduration(herorarity,skin,gthcbattles=None):
     if gthcbattles != None and gthcbattles > 0:
@@ -108,6 +109,7 @@ def main():
         event, values = window.read()
         if event == sg.WIN_CLOSED:
             break
+        thc_prices, thg_prices = get_prices_data()
         try:
             if values['-winrtate-'] == '':
                 winrate = thetan_arena_data.winrate

@@ -1,11 +1,41 @@
+from pythonpancakes import PancakeSwapAPI
+from multiprocessing.pool import ThreadPool
+
+def getprices(address):
+    ps = PancakeSwapAPI()
+    tokens = ps.tokens(address)
+    prices = tokens['data']['price']
+    return float(prices)
+
+def getprices_thc():
+    try:
+        return getprices('0x24802247bd157d771b7effa205237d8e9269ba8a')
+    except Exception:
+        return 0.2
+
+def getprices_thg():
+    try:
+        return getprices('0x9fd87aefe02441b123c3c32466cd9db4c578618f')
+    except Exception:
+        return 0.2
+
+def get_prices_data():
+    pool = ThreadPool(processes=10)
+    async_result = pool.apply_async(getprices_thc)
+    async_result2 = pool.apply_async(getprices_thg)
+    return async_result.get(),async_result2.get()
+
+
+
+
 hero = {}
 hero['common_hero'] = {}
 hero['epic_hero'] = {}
 hero['legendary_hero'] = {}
 
 winrate = .5
-thc_prices = 0.21
-thg_prices = 11.32
+thc_prices, thg_prices = get_prices_data()
+
 # common_hero = {}
 # epic_hero = {}
 # legendary_hero = {}
@@ -55,7 +85,10 @@ hero['legendary_hero']["mythic"]["min_gthc"] = 933
 hero['legendary_hero']["mythic"]["max_gthc"] = 1026
 
 def main():
+    print(thc_prices)
+    print(thg_prices)
     print(hero)
+    
 
 if __name__ == "__main__":
     main()
