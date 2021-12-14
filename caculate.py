@@ -100,7 +100,7 @@ def isfloat(num):
 
 def main():
     winrate = thetan_arena_data.winrate
-    thc_prices = thetan_arena_data.thc_prices
+    thc_prices, thg_prices = get_prices_data()
     hero_rarity = "common_hero"
     skin_rarity = "normal"
     gthcbattles = hero[hero_rarity][skin_rarity]["min_gthc"]
@@ -110,6 +110,21 @@ def main():
         if event == sg.WIN_CLOSED:
             break
         thc_prices, thg_prices = get_prices_data()
+        
+        if values["-hero_rarity1-"] == True:
+            hero_rarity = "common_hero"
+        elif values["-hero_rarity2-"] == True: 
+            hero_rarity = "epic_hero"
+        elif values["-hero_rarity3-"] == True:
+            hero_rarity = "legendary_hero"
+
+        if values["-skin_rarity1-"] == True:
+            skin_rarity = "normal"
+        elif values["-skin_rarity2-"] == True: 
+            skin_rarity = "rare"
+        elif values["-skin_rarity3-"] == True:
+            skin_rarity = "mythic"
+            
         try:
             if values['-winrtate-'] == '':
                 winrate = thetan_arena_data.winrate
@@ -125,29 +140,10 @@ def main():
         except Exception:
             print("Wrong input gthcbattles")
         try:
-            if values['-thc_prices-'] == '':
-                thc_prices = thetan_arena_data.thc_prices
-            if isfloat(values['-thc_prices-']):
+            if isfloat(values['-thc_prices-']) and not values['-thc_prices-'] == '':
                 thc_prices = float(values['-thc_prices-'])
-            else:
-                thc_prices = thetan_arena_data.thc_prices
         except Exception:
             print("Wrong input thc_prices")
-            thc_prices = thetan_arena_data.thc_prices
-            
-        if values["-hero_rarity1-"] == True:
-            hero_rarity = "common_hero"
-        elif values["-hero_rarity2-"] == True: 
-            hero_rarity = "epic_hero"
-        elif values["-hero_rarity3-"] == True:
-            hero_rarity = "legendary_hero"
-
-        if values["-skin_rarity1-"] == True:
-            skin_rarity = "normal"
-        elif values["-skin_rarity2-"] == True: 
-            skin_rarity = "rare"
-        elif values["-skin_rarity3-"] == True:
-            skin_rarity = "mythic"
         
         expect_profit_money = dailyearn(hero_rarity,winrate)*thc_prices
         window.Element('expect_profit').update(dailyearn(hero_rarity,winrate))
